@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="MedievalAdventure:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MedievalAdventure_jar</output-path>
+    <root id="archive" name="desafios.jar">
+      <element id="module-output" name="desafios" />
+    </root>
+  </artifact>
+</component>

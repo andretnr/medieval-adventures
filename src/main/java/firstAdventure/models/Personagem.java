@@ -3,9 +3,9 @@ package firstAdventure.models;
 
 import firstAdventure.personagem.enums.Classes;
 
-import java.text.DecimalFormat;
-
 public class Personagem {
+
+    private Long id;
 
     private String nome;
 
@@ -35,7 +35,45 @@ public class Personagem {
 
     private int pontos;
 
+    private long experiencia;
 
+    public Personagem() {
+    }
+
+    public Personagem(Long id, String nome, int idade, Classes classe, int nivel, int forca, int destreza, int constituicao, int inteligencia, int sabedoria, int carisma, double vida, double energia, int sorte, int pontos, long experiencia) {
+        this.id = id;
+        this.nome = nome;
+        this.idade = idade;
+        this.classe = classe;
+        this.nivel = nivel;
+        this.forca = forca;
+        this.destreza = destreza;
+        this.constituicao = constituicao;
+        this.inteligencia = inteligencia;
+        this.sabedoria = sabedoria;
+        this.carisma = carisma;
+        this.vida = vida;
+        this.energia = energia;
+        this.sorte = sorte;
+        this.pontos = pontos;
+        this.experiencia = experiencia;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public long getExperiencia() {
+        return experiencia;
+    }
+
+    public void setExperiencia(long experiencia) {
+        this.experiencia = experiencia;
+    }
 
     public String getNome() {
         return nome;

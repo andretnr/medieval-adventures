@@ -10,10 +10,10 @@ public class Inicio {
     }
 
     private void executarOptions(Scanner scan) {
-        TelaInicial.execute();
+   //     TelaInicial.execute();
         System.out.println("\nPressione Enter para continuar...");
     //    loadingAnimado();
-        scan.nextLine();
+  //      scan.nextLine();
         Options.execute(scan);
     }
 

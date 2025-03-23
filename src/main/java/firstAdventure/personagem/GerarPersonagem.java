@@ -1,5 +1,6 @@
 package firstAdventure.personagem;
 
+import firstAdventure.models.GameContext;
 import firstAdventure.models.Personagem;
 import firstAdventure.personagem.enums.Classes;
 import firstAdventure.utils.ValidaEntradas;
@@ -7,14 +8,17 @@ import firstAdventure.utils.ValidaEntradas;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static firstAdventure.personagem.AplicarNivel.verificarEvolucao;
+
 public class GerarPersonagem {
 
-    public static Personagem execute(Scanner entrada) {
+    public static void execute(Scanner entrada) {
 
         Personagem person = new Personagem();
         System.out.println("Primeiramente vamos criar seu personagem, nesse momento escolha o nome e a idade do seu personagem: ");
         System.out.println("Nome do seu personagem:");
-        person.setNome(entrada.next());
+        String nome = entrada.nextLine();
+        person.setNome(nome);
         System.out.println("Idade do seu personagem:");
 
 
@@ -32,10 +36,11 @@ public class GerarPersonagem {
         System.out.println("\nSelecione o nível inicial de seu personagem (1 a 5): ");
         int nvInicial = entrada.nextInt();
         ValidaEntradas.validaEntradaNumerico(1,5, nvInicial, entrada);
-        AplicarNivel.execute(person, nvInicial);
+        GameContext.getInstance().setPersonagemSelecionado(person);
+        AplicarNivel.execute(nvInicial);
+        verificarEvolucao();
 
         System.out.println(person.detalhadoPersonagem());
-        return person;
 
     }
 

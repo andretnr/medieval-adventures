@@ -42,6 +42,12 @@ public class Dados {
                 dadoMultiFaces(100);
                 break;
             case 7:
+                dadoMultiFaces(999);
+                break;
+            case 8:
+                dadoMultiFaces(80);
+                break;
+            case 9:
                 System.out.println("Saindo...");
                 return false;
             default:
@@ -59,7 +65,9 @@ public class Dados {
         faces.put(4, "Jogar D20");
         faces.put(5, "Jogar D50");
         faces.put(6, "Jogar D100");
-        faces.put(7, "Sair!");
+        faces.put(7, "Jogar D999");
+        faces.put(8, "Jogar D80");
+        faces.put(9, "Sair!");
         return faces;
     }
 

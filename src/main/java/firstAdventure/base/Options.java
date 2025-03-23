@@ -1,10 +1,12 @@
 package firstAdventure.base;
 
 import firstAdventure.functions.Dados;
+import firstAdventure.models.GameContext;
 import firstAdventure.models.Personagem;
 import firstAdventure.personagem.DistribuirPontos;
 import firstAdventure.personagem.GerarPersonagem;
 import firstAdventure.personagem.SalvarPersonagem;
+import firstAdventure.personagem.SelecionarPersonagem;
 import firstAdventure.utils.PrintMapTable;
 import firstAdventure.utils.ValidaEntradas;
 import firstAdventure.utils.ValidaPontos;
@@ -36,7 +38,7 @@ public class Options {
                 salvarPersonagem(person, scan);
                 break;
             case 3:
-                System.out.println("Opção ainda não implementada!");
+                selecionarPersonagem(scan);
                 break;
             case 4:
                 rolarDados(scan);
@@ -50,6 +52,7 @@ public class Options {
         }
         return true;
     }
+
 
     private static Map<Integer, String> optionsMap() {
         Map<Integer, String> options = new HashMap<>();
@@ -72,12 +75,13 @@ public class Options {
         String decisao = entrada.nextLine();
         ValidaEntradas.validaEscolhaSimOuNao(decisao, entrada);
         SalvarPersonagem.execute(person);
-
+        GameContext.getInstance().setPersonagemSelecionado(person);
 
     }
 
     private static Personagem criarPersonagem(Scanner entrada) {
-        Personagem person = GerarPersonagem.execute(entrada);
+        GerarPersonagem.execute(entrada);
+        Personagem person = GameContext.getInstance().getPersonagemSelecionado();
         if(ValidaPontos.execute(person, entrada)){
             distribuirPontos(person, entrada);
         }
@@ -93,4 +97,14 @@ public class Options {
     public static void distribuirPontos(Personagem person, Scanner entrada) {
         DistribuirPontos.execute(person, entrada);
     }
+
+
+    private static void selecionarPersonagem(Scanner scan) {
+        SelecionarPersonagem.execute(scan);
+
+    }
+
+
+
+
 }

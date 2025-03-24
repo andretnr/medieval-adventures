@@ -1,0 +1,14 @@
+<configuration>
+    <!-- Definir o nível mínimo de log -->
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Definir um Appender para saída no console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Padrão do formato do log -->
+            <pattern>[%d{HH:mm:ss}] [%level] [%logger{10}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+</configuration>

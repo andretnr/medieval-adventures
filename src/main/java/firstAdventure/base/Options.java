@@ -31,19 +31,24 @@ public class Options {
     private static boolean executeSelectedOption(int selectedOption, Scanner scan) {
         switch (selectedOption) {
             case 1:
+                AudioPlayer.tocarMusicaCalmaDeVila();
                 iniciarAventura(scan);
                 break;
             case 2:
+                AudioPlayer.tocarMusicaCriacaoPersonagem();
                 Personagem person = criarPersonagem(scan);
                 salvarPersonagem(person, scan);
                 break;
             case 3:
+                AudioPlayer.tocarMusicaMisteriosa();
                 selecionarPersonagem(scan);
                 break;
             case 4:
+                AudioPlayer.tocarMusicaMisteriosa();
                 rolarDados(scan);
                 break;
             case 5:
+                AudioPlayer.tocarMusicaCreditos();
                 TelaEncerramento.execute();
                 return false;
             default:

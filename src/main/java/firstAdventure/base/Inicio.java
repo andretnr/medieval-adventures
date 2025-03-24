@@ -5,15 +5,16 @@ import java.util.Scanner;
 
 public class Inicio {
     public void executar(Scanner scan) {
+        AudioPlayer.tocarMusicaInicio();
         executarOptions(scan);
         scan.close();
     }
 
     private void executarOptions(Scanner scan) {
-   //     TelaInicial.execute();
+        TelaInicial.execute();
         System.out.println("\nPressione Enter para continuar...");
     //    loadingAnimado();
-  //      scan.nextLine();
+        scan.nextLine();
         Options.execute(scan);
     }
 

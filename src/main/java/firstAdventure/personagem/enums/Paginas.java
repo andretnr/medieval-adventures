@@ -6,8 +6,17 @@ public enum Paginas {
     PAGINA_34("TEXTO DA PAGINA 34", 10, 25),
     PAGINA_17("TEXTO DA PAGINA 17", 10, 1);
 
+    private final String texto;
+    private final int proximaPaginaA;
+    private final int proximaPaginaB;
 
-    Paginas(String s, int i, int i1) {
-
+    Paginas(String texto, int proximaPaginaA, int proximaPaginaB) {
+        this.texto = texto;
+        this.proximaPaginaA = proximaPaginaA;
+        this.proximaPaginaB = proximaPaginaB;
     }
+
+    public String getTexto() { return texto; }
+    public int getProximaPaginaA() { return proximaPaginaA; }
+    public int getProximaPaginaB() { return proximaPaginaB; }
 }

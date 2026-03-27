@@ -1,29 +1,25 @@
 package firstAdventure.utils;
 
-import java.util.Map;
 import java.util.Scanner;
 
 public class ValidaEntradas {
 
+    private ValidaEntradas() {}
+
     public static String validaEscolhaSimOuNao(String entry, Scanner scan) {
         while (!"S".equalsIgnoreCase(entry) && !"N".equalsIgnoreCase(entry)) {
             System.out.println("Entrada inválida! Por favor, insira 'S' para sim ou 'N' para não.");
-            entry = scan.next();
-            scan.nextLine();
+            entry = scan.nextLine().trim();
         }
-        scan.nextLine();
         return entry;
     }
 
-
     public static int validaEntradaNumerico(int min, int max, int value, Scanner scan) {
         while (value < min || value > max) {
-            System.out.println("Entrada inválida! O valor deve estar entre " + min + " e " + max + ".");
+            System.out.printf("Entrada inválida! O valor deve estar entre %d e %d: %n", min, max);
             value = scan.nextInt();
             scan.nextLine();
         }
-        scan.nextLine();
         return value;
     }
-
 }

@@ -10,47 +10,50 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BuscarPersonagensDAO {
 
+    private static final String SQL = "SELECT * FROM Personagem";
+
     public static List<Personagem> execute() {
-            List<Personagem> personagens = new ArrayList<>();
-            String sql = "SELECT * FROM Personagem";
+        List<Personagem> personagens = new ArrayList<>();
 
-            try (Connection conn = ConexaoSQLite.conectar()) {
-                if (Objects.isNull(conn)){
-                    throw new SQLException();
-                }
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-
-                while (rs.next()) {
-                    Personagem personagem = new Personagem(
-                            rs.getLong("id"),
-                            rs.getString("nome"),
-                            rs.getInt("idade"),
-                            Classes.valueOf(rs.getString("classe")),
-                            rs.getInt("nivel"),
-                            rs.getInt("forca"),
-                            rs.getInt("destreza"),
-                            rs.getInt("constituicao"),
-                            rs.getInt("inteligencia"),
-                            rs.getInt("sabedoria"),
-                            rs.getInt("carisma"),
-                            rs.getDouble("vida"),
-                            rs.getDouble("energia"),
-                            rs.getInt("sorte"),
-                            rs.getInt("pontos"),
-                            rs.getLong("experiencia")
-                    );
-                    personagens.add(personagem);
-                }
-            } catch (SQLException e) {
-                System.err.println("Erro ao buscar personagens: " + e.getMessage());
-            }
-
+        Connection conn = ConexaoSQLite.conectar();
+        if (conn == null) {
+            System.err.println("Erro ao buscar personagens: conexão nula.");
             return personagens;
         }
-    }
 
+        try (conn;
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(SQL)) {
+
+            while (rs.next()) {
+                Personagem personagem = new Personagem(
+                        rs.getLong("id"),
+                        rs.getString("nome"),
+                        rs.getInt("idade"),
+                        Classes.valueOf(rs.getString("classe")),
+                        rs.getInt("nivel"),
+                        rs.getInt("forca"),
+                        rs.getInt("destreza"),
+                        rs.getInt("constituicao"),
+                        rs.getInt("inteligencia"),
+                        rs.getInt("sabedoria"),
+                        rs.getInt("carisma"),
+                        rs.getDouble("vida"),
+                        rs.getDouble("energia"),
+                        rs.getInt("sorte"),
+                        rs.getInt("pontos"),
+                        rs.getLong("experiencia")
+                );
+                personagens.add(personagem);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar personagens: " + e.getMessage());
+        }
+
+        return personagens;
+    }
+}

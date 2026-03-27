@@ -6,17 +6,23 @@ import firstAdventure.models.Personagem;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class SalvarPersonagemDAO {
-    public static void execute(Personagem personagem) {
-        String sql = "INSERT INTO Personagem (nome, idade, classe, nivel, forca, destreza, constituicao, inteligencia, sabedoria, carisma, vida, energia, sorte, pontos, experiencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = ConexaoSQLite.conectar()) {
-            if (Objects.isNull(conn)) {
-                throw new SQLException();
-            }
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+    private static final String SQL = """
+        INSERT INTO Personagem
+            (nome, idade, classe, nivel, forca, destreza, constituicao,
+             inteligencia, sabedoria, carisma, vida, energia, sorte, pontos, experiencia)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
+    public static void execute(Personagem personagem) {
+        Connection conn = ConexaoSQLite.conectar();
+        if (conn == null) {
+            System.err.println("Erro ao salvar personagem: conexão nula.");
+            return;
+        }
+        try (conn; PreparedStatement pstmt = conn.prepareStatement(SQL)) {
             pstmt.setString(1, personagem.getNome());
             pstmt.setInt(2, personagem.getIdade());
             pstmt.setString(3, personagem.getClasse().toString());
@@ -35,6 +41,7 @@ public class SalvarPersonagemDAO {
 
             pstmt.executeUpdate();
             System.out.println("Personagem salvo com sucesso!");
+
         } catch (SQLException e) {
             System.err.println("Erro ao salvar personagem: " + e.getMessage());
         }

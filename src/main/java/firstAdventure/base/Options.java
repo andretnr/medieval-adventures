@@ -1,6 +1,9 @@
 package firstAdventure.base;
 
 import firstAdventure.functions.Dados;
+import firstAdventure.historia.Historia;
+import firstAdventure.historia.motor.MotorHistoria;
+import firstAdventure.historia.piloto.AVilaEmChamas;
 import firstAdventure.models.GameContext;
 import firstAdventure.models.Personagem;
 import firstAdventure.personagem.DistribuirPontos;
@@ -11,11 +14,12 @@ import firstAdventure.utils.PrintMapTable;
 import firstAdventure.utils.ValidaEntradas;
 import firstAdventure.utils.ValidaPontos;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Options {
+
     public static void execute(Scanner scan) {
         boolean continuar = true;
         while (continuar) {
@@ -58,9 +62,9 @@ public class Options {
         return true;
     }
 
-
     private static Map<Integer, String> optionsMap() {
-        Map<Integer, String> options = new HashMap<>();
+        // LinkedHashMap mantém a ordem de inserção na exibição
+        Map<Integer, String> options = new LinkedHashMap<>();
         options.put(1, "Iniciar aventura");
         options.put(2, "Criar Personagem");
         options.put(3, "Selecionar personagem");
@@ -70,30 +74,50 @@ public class Options {
     }
 
     private static void iniciarAventura(Scanner scan) {
-        System.out.println("Aqui iniciamos a aventura!");
-        System.out.println("Aventura ainda não implmentada!");
-        execute(scan);
+        System.out.println("\nEscolha uma aventura:");
+        Map<Integer, String> historias = new LinkedHashMap<>();
+        historias.put(1, "A Vila em Chamas — Salve Ravenwood do cruel Draven");
+        historias.put(2, "Voltar ao menu");
+        PrintMapTable.execute(historias);
+
+        int op = scan.nextInt();
+        scan.nextLine();
+        op = ValidaEntradas.validaEntradaNumerico(1, historias.size(), op, scan);
+
+        if (op == historias.size()) return;
+
+        Historia historia = switch (op) {
+            case 1 -> new AVilaEmChamas();
+            default -> null;
+        };
+
+        if (historia != null) {
+            MotorHistoria.executar(historia, scan);
+        }
     }
 
+    // CORREÇÃO: verificar resposta antes de salvar
     private static void salvarPersonagem(Personagem person, Scanner entrada) {
-        System.out.println("Deseja salvar o " + person.getNome() + "? (S/N)");
+        System.out.println("Deseja salvar o personagem " + person.getNome() + "? (S/N)");
         String decisao = entrada.nextLine();
-        ValidaEntradas.validaEscolhaSimOuNao(decisao, entrada);
-        SalvarPersonagem.execute(person);
-        GameContext.getInstance().setPersonagemSelecionado(person);
-
+        decisao = ValidaEntradas.validaEscolhaSimOuNao(decisao, entrada);
+        if ("S".equalsIgnoreCase(decisao)) {
+            SalvarPersonagem.execute(person);
+            GameContext.getInstance().setPersonagemSelecionado(person);
+        } else {
+            System.out.println("Personagem não foi salvo.");
+        }
     }
 
     private static Personagem criarPersonagem(Scanner entrada) {
         GerarPersonagem.execute(entrada);
         Personagem person = GameContext.getInstance().getPersonagemSelecionado();
-        if(ValidaPontos.execute(person, entrada)){
+        if (ValidaPontos.execute(person, entrada)) {
             distribuirPontos(person, entrada);
         }
         System.out.println(person.detalhadoPersonagem());
         return person;
     }
-
 
     private static void rolarDados(Scanner scan) {
         Dados.execute(scan);
@@ -103,13 +127,7 @@ public class Options {
         DistribuirPontos.execute(person, entrada);
     }
 
-
     private static void selecionarPersonagem(Scanner scan) {
         SelecionarPersonagem.execute(scan);
-
     }
-
-
-
-
 }

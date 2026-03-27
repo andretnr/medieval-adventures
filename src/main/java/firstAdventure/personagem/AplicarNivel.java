@@ -3,54 +3,51 @@ package firstAdventure.personagem;
 import firstAdventure.models.GameContext;
 import firstAdventure.models.Personagem;
 
-import java.util.Objects;
-
 public class AplicarNivel {
 
-    static final int PONTOS_INICIAIS = 100; // Defina o valor que você achar apropriado
-    static final double AUMENTO_POR_NIVEL = 1.15; // 15% de aumento por nível
+    public static final int PONTOS_INICIAIS = 100;
+    public static final double AUMENTO_POR_NIVEL = 1.15; // 15% por nível
 
-    static void execute(int nvAdicionar) {
+    /** Adiciona níveis ao personagem do contexto e distribui pontos. */
+    public static void execute(int nvAdicionar) {
         Personagem person = GameContext.getInstance().getPersonagemSelecionado();
-        int nvAtual = person.getNivel();
-        int novoNivel = nvAtual + nvAdicionar;
-        int ptAtual = person.getPontos();
-        int novoPonto = ptAtual+ nvAdicionar * 5;
+        int novoNivel = person.getNivel() + nvAdicionar;
+        int novosPontos = person.getPontos() + nvAdicionar * 5;
         person.setNivel(novoNivel);
-        person.setPontos(novoPonto);
+        person.setPontos(novosPontos);
         person.setExperiencia(0);
     }
 
-    static void verificarEvolucao() {
-        Personagem personagemSelecionado = GameContext.getInstance().getPersonagemSelecionado();
-        long experiencia = personagemSelecionado.getExperiencia();
-        int nivel = personagemSelecionado.getNivel();
+    /** Verifica se o personagem tem XP suficiente para evoluir e aplica os níveis. */
+    public static void verificarEvolucao() {
+        Personagem personagem = GameContext.getInstance().getPersonagemSelecionado();
+        long experiencia = personagem.getExperiencia();
+        int nivel = personagem.getNivel();
 
-        // Calcular a quantidade de pontos necessários para o próximo nível
-        int pontosParaProximoNivel = PONTOS_INICIAIS;
+        int pontosParaProximoNivel = calcularXpParaNivel(nivel);
 
-        // Calcular os pontos necessários até o nível atual
-        for (int i = 1; i < nivel; i++) {
-            pontosParaProximoNivel = (int) Math.ceil(pontosParaProximoNivel * AUMENTO_POR_NIVEL);
-        }
-
-        // Verificar se o personagem tem experiência suficiente para evoluir
         while (experiencia >= pontosParaProximoNivel) {
-            // O personagem sobe de nível
-            nivel++;
-
-            // Subtrair os pontos para o próximo nível da experiência do personagem
             experiencia -= pontosParaProximoNivel;
-
-            // Atualizar os pontos necessários para o próximo nível com o aumento de 15%
+            nivel++;
             pontosParaProximoNivel = (int) Math.ceil(pontosParaProximoNivel * AUMENTO_POR_NIVEL);
         }
 
-        // Atualizar as informações do personagem após a evolução
-        personagemSelecionado.setNivel(nivel);
-        personagemSelecionado.setExperiencia(experiencia);
+        personagem.setNivel(nivel);
+        personagem.setExperiencia(experiencia);
+        System.out.printf("Personagem no nível %d com %d XP restantes.%n", nivel, experiencia);
+    }
 
-        // Se necessário, adicione alguma mensagem ou ação após a evolução
-        System.out.println("O personagem subiu para o nível " + nivel + " com " + experiencia + " pontos de experiência restantes.");
+    /**
+     * Calcula o XP necessário para atingir o nível informado.
+     *
+     * @param nivel nível atual (base 1)
+     * @return XP necessário para o próximo nível
+     */
+    public static int calcularXpParaNivel(int nivel) {
+        int pontos = PONTOS_INICIAIS;
+        for (int i = 1; i < nivel; i++) {
+            pontos = (int) Math.ceil(pontos * AUMENTO_POR_NIVEL);
+        }
+        return pontos;
     }
 }

@@ -1,14 +1,18 @@
 package firstAdventure.models;
 
 public class GameContext {
-    private static GameContext instance;
+    private static volatile GameContext instance;
     private Personagem personagemSelecionado;
 
     private GameContext() {}
 
     public static GameContext getInstance() {
         if (instance == null) {
-            instance = new GameContext();
+            synchronized (GameContext.class) {
+                if (instance == null) {
+                    instance = new GameContext();
+                }
+            }
         }
         return instance;
     }
@@ -19,5 +23,10 @@ public class GameContext {
 
     public void setPersonagemSelecionado(Personagem personagem) {
         this.personagemSelecionado = personagem;
+    }
+
+    /** Reinicia o contexto — útil para testes unitários. */
+    public static void resetInstance() {
+        instance = null;
     }
 }
